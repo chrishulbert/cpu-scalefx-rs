@@ -6,3 +6,4 @@ ScaleFX pixel art upcaler, for the CPU, in Rust.
 
 * https://github.com/libretro/slang-shaders/blob/master/edge-smoothing/scalefx/shaders/old/scalefx-9x.slangp
 * https://github.com/libretro/slang-shaders/blob/master/edge-smoothing/scalefx/shaders/old/scalefx-pass0.slang
+* http://www.compuphase.com/cmetric.htm

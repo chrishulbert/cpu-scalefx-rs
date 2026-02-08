@@ -6,6 +6,7 @@ struct Image {
     pixels: Vec<u32>,
 }
 
+// Make a sample pixel image.
 fn sample() -> Image {
     let t = 0; // Transparent.
     let b = 0xff; // Black.
@@ -35,6 +36,43 @@ fn sample() -> Image {
     }
 }
 
+// Determine the human-perceived difference between two colours.
+// For humanity's sake, r and g and b are weighted differently.
+// https://www.compuphase.com/cmetric.htm
+// Returns 0 for same colours; 764.83 for white-black; 765 if any are transparent.
+fn colour_distance(a: u32, b: u32) -> f32 {
+    let a_r = a >> 24;
+    let a_g = (a >> 16) & 0xff;
+    let a_b = (a >> 8) & 0xff;
+    let a_a = a & 0xff;
+
+    let b_r = b >> 24;
+    let b_g = (b >> 16) & 0xff;
+    let b_b = (b >> 8) & 0xff;
+    let b_a = b & 0xff;
+
+    if a_a < 0x80 || b_a < 0x80 { return 765. } // Consider transparent very different.
+
+    let r_mean = (a_r + b_r) / 2;
+    let r = a_r.abs_diff(b_r);
+    let g = a_g.abs_diff(b_g);
+    let b = a_b.abs_diff(b_b);
+
+    if r == 0 && g == 0 && b == 0 { return 0. } // Save the conplicated calculation below.
+
+    (((((512 + r_mean)*r*r)>>8) + 4*g*g + (((767-r_mean)*b*b)>>8)) as f32).sqrt()
+}
+
 fn main() {
     println!("Hello, world!");
+    println!("{}", colour_distance(0xffffffff, 0xff));
+    println!("{}", colour_distance(0xff0000ff, 0xff0000ff));
+    println!("{}", colour_distance(0xff0000ff, 0x00ff00ff));
+    println!("{}", colour_distance(0xff0000ff, 0x0000ffff));
+    println!("{}", colour_distance(0x00ff00ff, 0xff0000ff));
+    println!("{}", colour_distance(0x00ff00ff, 0x00ff00ff));
+    println!("{}", colour_distance(0x00ff00ff, 0x0000ffff));
+    println!("{}", colour_distance(0x0000ffff, 0xff0000ff));
+    println!("{}", colour_distance(0x0000ffff, 0x00ff00ff));
+    println!("{}", colour_distance(0x0000ffff, 0x0000ffff));
 }
