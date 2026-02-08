@@ -36,6 +36,8 @@ fn sample() -> Image {
     }
 }
 
+const MAX_COLOUR_DISTANCE: f32 = 765.;
+
 // Determine the human-perceived difference between two colours.
 // For humanity's sake, r and g and b are weighted differently.
 // https://www.compuphase.com/cmetric.htm
@@ -51,7 +53,7 @@ fn colour_distance(a: u32, b: u32) -> f32 {
     let b_b = (b >> 8) & 0xff;
     let b_a = b & 0xff;
 
-    if a_a < 0x80 || b_a < 0x80 { return 765. } // Consider transparent very different.
+    if a_a < 0x80 || b_a < 0x80 { return MAX_COLOUR_DISTANCE } // Consider transparent very different.
 
     let r_mean = (a_r + b_r) / 2;
     let r = a_r.abs_diff(b_r);
@@ -61,6 +63,58 @@ fn colour_distance(a: u32, b: u32) -> f32 {
     if r == 0 && g == 0 && b == 0 { return 0. } // Save the conplicated calculation below.
 
     (((((512 + r_mean)*r*r)>>8) + 4*g*g + (((767-r_mean)*b*b)>>8)) as f32).sqrt()
+}
+
+
+#[derive(Debug)]
+struct PixelWithDistances {
+    pixel: u32,
+    up_left: f32, // Colour distance to the pixel to the up-left.
+    up: f32,
+    up_right: f32,
+    right: f32,
+}
+
+#[derive(Debug)]
+struct ImageWithDistances {
+    width: usize,
+    height: usize,
+    pixels: Vec<PixelWithDistances>,
+}
+
+// Calculate the colour distances to neighbours.
+// This implements pass 0 here:
+// https://github.com/libretro/slang-shaders/blob/master/edge-smoothing/scalefx/shaders/scalefx-pass0.slang
+fn calculate_distances(image: &Image) -> ImageWithDistances {
+    let pixels_len = image.pixels.len();
+    let mut pixels: Vec<PixelWithDistances> = Vec::with_capacity(pixels_len);
+
+    for y in 0..image.height {
+        for x in 0..image.width {
+            let i = y * image.width + x;
+
+            // Get the neighbouring pixels, returning transparent if they're out of bounds.
+            TODO don't let it wrap horizontally
+            let up_left: u32 = if i >= image.width + 1 { image.pixels[i - (image.width + 1)] } else { 0 };
+            let up = if i >= image.width { image.pixels[i - image.width] } else { 0 };
+            let up_right: u32 = if i >= image.width - 1 { image.pixels[i - (image.width - 1)] } else { 0 };
+            let center = image.pixels[i];
+            let right = if i + 1 < pixels_len { image.pixels[i + 1] } else { 0 };
+
+            pixels.push(PixelWithDistances {
+                pixel: center,
+                up_left: colour_distance(center, up_left),
+                up: colour_distance(center, up),
+                up_right: colour_distance(center, up_right),
+                right: colour_distance(center, right),
+            });
+        }
+    }
+    ImageWithDistances {
+        width: image.width,
+        height: image.height,
+        pixels,
+    }
 }
 
 fn main() {
@@ -75,4 +129,9 @@ fn main() {
     println!("{}", colour_distance(0x0000ffff, 0xff0000ff));
     println!("{}", colour_distance(0x0000ffff, 0x00ff00ff));
     println!("{}", colour_distance(0x0000ffff, 0x0000ffff));
+    println!("{}", colour_distance(0x0000ffff, 0));
+
+    let sample = sample();
+    let sample_with_distances = calculate_distances(&sample);
+    println!("{:#?}", sample_with_distances);
 }
