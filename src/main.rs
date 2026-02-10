@@ -268,11 +268,6 @@ struct U8Vec4 {
     z: u8,
     w: u8,
 }
-impl U8Vec4 {
-    fn zero() -> Self {
-        Self { x: 0, y: 0, z: 0, w: 0 }
-    }
-}
 
 #[derive(Debug, Copy, Clone)]
 struct Vec4 {
@@ -305,9 +300,6 @@ impl Vec4 {
     }
     fn leq(a: Self, b: Self) -> Self {
         Self::step(a, b)
-    }
-    fn geq(a: Self, b: Self) -> Self {
-        Self::step(b, a)
     }
     fn not(self) -> Self {
         1.0f32 - self
@@ -414,7 +406,6 @@ fn resolve_corner_configurations(image: &ImageWithCornerStrengths) -> ImageWithC
     let pixels_len = image.pixels.len();
     let mut pixels: Vec<PixelWithCornerConfiguration> = Vec::with_capacity(pixels_len);
     let offscreen = PixelWithCornerStrengths::offscreen();
-    let zero = Vec4::zero();
 
     for y in 0..image.height {
         for x in 0..image.width {
@@ -546,7 +537,6 @@ fn determine_edge_levels(image: &ImageWithCornerConfigurations) -> ImageWithEdge
     let pixels_len = image.pixels.len();
     let mut pixels: Vec<PixelWithEdgeLevel> = Vec::with_capacity(pixels_len);
     let offscreen = PixelWithCornerConfiguration::offscreen();
-    let zero = Vec4::zero();
 
     for y in 0..image.height {
         for x in 0..image.width {
