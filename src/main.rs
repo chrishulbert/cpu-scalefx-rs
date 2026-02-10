@@ -372,14 +372,6 @@ fn ge_f32(x: f32, y: f32) -> f32 {
 #[derive(Debug, Clone, Copy)]
 struct PixelWithCornerConfiguration {
     pixel: u32,
-    // colour_distance_up_left: f32, // X: Colour distance to the pixel to the up-left.
-    // colour_distance_up: f32, // Y.
-    // colour_distance_up_right: f32, // Z.
-    // colour_distance_right: f32, // W.
-    // corner_strength_up_left: f32, // Corner strength. Called X in the shader.
-    // corner_strength_up_right: f32, // Y in the shader.
-    // corner_strength_down_right: f32, // Z in the shader.
-    // corner_strength_down_left: f32, // W in the shader.
     res: BVec4, // Resolution?
     horizontal_edges: BVec4,
     vertical_edges: BVec4,
@@ -389,14 +381,6 @@ impl PixelWithCornerConfiguration {
     fn offscreen() -> Self {
         Self {
             pixel: 0,
-            // colour_distance_up_left: MAX_COLOUR_DISTANCE,
-            // colour_distance_up: MAX_COLOUR_DISTANCE,
-            // colour_distance_up_right: MAX_COLOUR_DISTANCE,
-            // colour_distance_right: MAX_COLOUR_DISTANCE,
-            // corner_strength_up_left: 0.,
-            // corner_strength_up_right: 0.,
-            // corner_strength_down_right: 0.,
-            // corner_strength_down_left: 0.,
             res: BVec4::zero(),
             horizontal_edges: BVec4::zero(),
             vertical_edges: BVec4::zero(),
@@ -527,14 +511,6 @@ fn resolve_corner_configurations(image: &ImageWithCornerStrengths) -> ImageWithC
 
             pixels.push(PixelWithCornerConfiguration {
                 pixel: e.pixel,
-                // colour_distance_up_left: e.colour_distance_up_left,
-                // colour_distance_up: e.colour_distance_up,
-                // colour_distance_up_right: e.colour_distance_up_right,
-                // colour_distance_right: e.colour_distance_right,
-                // corner_strength_up_left: e.corner_strength_up_left,
-                // corner_strength_up_right: e.corner_strength_up_right,
-                // corner_strength_down_right: e.corner_strength_down_right,
-                // corner_strength_down_left: e.corner_strength_down_left,
                 res: res.to_bvec(),
                 horizontal_edges: horizontal_edges.to_bvec(),
                 vertical_edges: vertical_edges.to_bvec(),
