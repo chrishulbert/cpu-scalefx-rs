@@ -1,4 +1,4 @@
-# CPU-ScaleFX-rs
+# ScaleFX-rs
 
 ScaleFX pixel art upcaler, for the CPU, in Rust.
 
