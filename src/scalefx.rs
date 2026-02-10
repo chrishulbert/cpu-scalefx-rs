@@ -40,7 +40,8 @@ fn colour_distance(a: u32, b: u32) -> f32 {
     let b_b = (b >> 8) & 0xff;
     let b_a = b & 0xff;
 
-    if a_a < 0x80 || b_a < 0x80 { return MAX_COLOUR_DISTANCE } // Consider transparent very different.
+    if a_a < 0x80 && b_a < 0x80 { return 0. } // Transparent vs transparent counts as the same.
+    if a_a < 0x80 || b_a < 0x80 { return MAX_COLOUR_DISTANCE } // Colour -> transparent counts as different.
 
     let r_mean = (a_r + b_r) / 2;
     let r = a_r.abs_diff(b_r);
