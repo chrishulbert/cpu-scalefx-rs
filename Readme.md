@@ -242,11 +242,11 @@ If anybody out there actually uses this, we can have a conversation about uplift
 
 ![Nospike](https://github.com/chrishulbert/cpu-scalefx-rs/raw/main/readme/Nospike.png)
 
-![Nospike.big](https://github.com/chrishulbert/cpu-scalefx-rs/raw/main/readme/Nospike.big.)png
+![Nospike.big](https://github.com/chrishulbert/cpu-scalefx-rs/raw/main/readme/Nospike.big.png)
 
 ![Orbatrix](https://github.com/chrishulbert/cpu-scalefx-rs/raw/main/readme/Orbatrix.png)
 
-![Orbatrix.big](https://github.com/chrishulbert/cpu-scalefx-rs/raw/main/readme/Orbatrix.big.)png
+![Orbatrix.big](https://github.com/chrishulbert/cpu-scalefx-rs/raw/main/readme/Orbatrix.big.png)
 
 ## References
 
