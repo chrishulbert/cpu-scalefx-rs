@@ -218,7 +218,7 @@ If anybody out there actually uses this, we can have a conversation about uplift
 
 ![Ceilick](https://github.com/chrishulbert/cpu-scalefx-rs/raw/main/readme/Ceilick.png)
 
-![Ceilick.big](https://github.com/chrishulbert/cpu-scalefx-rs/raw/main/readme/Ceilick.big.)png
+![Ceilick.big](https://github.com/chrishulbert/cpu-scalefx-rs/raw/main/readme/Ceilick.big.png)
 
 ![Flect](https://github.com/chrishulbert/cpu-scalefx-rs/raw/main/readme/Flect.png)
 
